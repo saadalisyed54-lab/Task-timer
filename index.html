@@ -2,662 +2,553 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offline Task Timer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZenFocus | Task Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #ffffff;
-            --text-color: #333333;
-            --panel-bg: #f4f4f4;
-            --accent-color: #4CAF50;
-            --danger-color: #ff4444;
-            --button-text: #ffffff;
-            --border-radius: 8px;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-dim: #64748b;
+            --accent: #6366f1;
+            --accent-soft: rgba(99, 102, 241, 0.1);
+            --danger: #f43f5e;
+            --success: #10b981;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        /* THEMES */
-        body.theme-1 { --bg-color: #ffffff; --text-color: #222; --panel-bg: #f0f0f0; --accent-color: #2196F3; } /* Default Light */
-        body.theme-2 { --bg-color: #121212; --text-color: #eee; --panel-bg: #1e1e1e; --accent-color: #BB86FC; } /* Dark Mode */
-        body.theme-3 { --bg-color: #ffffec; --text-color: #3e2723; --panel-bg: #fff8e1; --accent-color: #ffab00; } /* Cream */
-        body.theme-4 { --bg-color: #e0f7fa; --text-color: #006064; --panel-bg: #b2ebf2; --accent-color: #00bcd4; } /* Cyan Light */
-        body.theme-5 { --bg-color: #002b36; --text-color: #839496; --panel-bg: #073642; --accent-color: #2aa198; } /* Solarized Dark */
-        body.theme-6 { --bg-color: #fdf6e3; --text-color: #657b83; --panel-bg: #eee8d5; --accent-color: #859900; } /* Solarized Light */
-        body.theme-7 { --bg-color: #282c34; --text-color: #abb2bf; --panel-bg: #353a45; --accent-color: #61afef; } /* Atom */
-        body.theme-8 { --bg-color: #2e3440; --text-color: #d8dee9; --panel-bg: #3b4252; --accent-color: #88c0d0; } /* Nordic */
-        body.theme-9 { --bg-color: #fff0f5; --text-color: #880e4f; --panel-bg: #fce4ec; --accent-color: #e91e63; } /* Pink */
-        body.theme-10 { --bg-color: #e8f5e9; --text-color: #1b5e20; --panel-bg: #c8e6c9; --accent-color: #43a047; } /* Mint */
-        body.theme-11 { --bg-color: #000000; --text-color: #ffffff; --panel-bg: #333333; --accent-color: #ffffff; } /* High Contrast */
-        body.theme-12 { --bg-color: #1a1a2e; --text-color: #e94560; --panel-bg: #16213e; --accent-color: #0f3460; } /* Cyber */
-        body.theme-13 { --bg-color: #3e2723; --text-color: #efebe9; --panel-bg: #4e342e; --accent-color: #d7ccc8; } /* Coffee */
-        body.theme-14 { --bg-color: #311b92; --text-color: #ede7f6; --panel-bg: #4527a0; --accent-color: #7c4dff; } /* Deep Purple */
-        body.theme-15 { --bg-color: #f3e5f5; --text-color: #4a148c; --panel-bg: #e1bee7; --accent-color: #8e24aa; } /* Lavender */
-        body.theme-16 { --bg-color: #827717; --text-color: #f9fbe7; --panel-bg: #9e9d24; --accent-color: #cddc39; } /* Olive */
-        body.theme-17 { --bg-color: #263238; --text-color: #eceff1; --panel-bg: #37474f; --accent-color: #ff5722; } /* Slate */
-        body.theme-18 { --bg-color: #bf360c; --text-color: #fff3e0; --panel-bg: #d84315; --accent-color: #ffab91; } /* Burnt Orange */
-        body.theme-19 { --bg-color: #0d47a1; --text-color: #e3f2fd; --panel-bg: #1565c0; --accent-color: #64b5f6; } /* Ocean */
-        body.theme-20 { --bg-color: #424242; --text-color: #bdbdbd; --panel-bg: #616161; --accent-color: #ffca28; } /* Gray & Gold */
+        /* THEME ENGINE */
+        body.theme-1 { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --accent: #6366f1; } /* Light Slate */
+        body.theme-2 { --bg: #020617; --card: #0f172a; --text: #f1f5f9; --accent: #818cf8; } /* Midnight */
+        body.theme-3 { --bg: #fefaf3; --card: #ffffff; --text: #451a03; --accent: #d97706; } /* Sand */
+        body.theme-4 { --bg: #f0fdf4; --card: #ffffff; --text: #064e3b; --accent: #10b981; } /* Forest */
+        body.theme-5 { --bg: #faf5ff; --card: #ffffff; --text: #4c1d95; --accent: #a855f7; } /* Lavender */
+        body.theme-6 { --bg: #fff1f2; --card: #ffffff; --text: #881337; --accent: #fb7185; } /* Rose */
+        body.theme-7 { --bg: #000000; --card: #111111; --text: #ffffff; --accent: #ffffff; } /* Blackout */
+        body.theme-8 { --bg: #111827; --card: #1f2937; --text: #f9fafb; --accent: #38bdf8; } /* Oceanic */
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-family);
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-main);
             margin: 0;
             padding: 0;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            line-height: 1.5;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
 
-        /* HEADER */
         header {
-            padding: 15px;
-            background: var(--panel-bg);
+            padding: 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--accent-color);
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
         }
-        .token-display { font-weight: bold; font-size: 1.2rem; }
-        .controls { display: flex; gap: 10px; }
+
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
         
-        /* NAVIGATION */
-        nav {
-            display: flex;
-            overflow-x: auto;
-            background: var(--panel-bg);
-            padding: 5px;
-            gap: 5px;
+        .header-tools { display: flex; align-items: center; gap: 12px; }
+
+        .token-badge {
+            background: var(--card);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-weight: 700;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.05);
         }
-        nav button {
-            flex: 1;
-            white-space: nowrap;
-            padding: 10px;
+
+        .theme-pill {
+            background: var(--card);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 6px 12px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        select {
             background: transparent;
             border: none;
-            color: var(--text-color);
+            color: var(--text);
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.85rem;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
-        }
-        nav button.active { border-bottom-color: var(--accent-color); font-weight: bold; }
-
-        /* CONTENT */
-        main { flex: 1; padding: 20px; max-width: 800px; margin: 0 auto; width: 100%; }
-        .page { display: none; }
-        .page.active { display: block; }
-        
-        /* CARDS & FORMS */
-        .card {
-            background: var(--panel-bg);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .input-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-        input, select {
-            padding: 10px;
-            border: 1px solid var(--text-color);
-            background: var(--bg-color);
-            color: var(--text-color);
-            border-radius: 4px;
-            flex: 1;
         }
 
-        button {
-            padding: 10px 15px;
-            cursor: pointer;
+        nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(var(--card), 0.8);
+            backdrop-filter: blur(12px);
+            padding: 8px;
+            border-radius: 100px;
+            display: flex;
+            gap: 4px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav button {
+            padding: 12px 20px;
             border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            background: var(--accent-color);
-            color: var(--button-text);
-            transition: opacity 0.2s;
-        }
-        button:hover { opacity: 0.9; }
-        button.danger { background: var(--danger-color); }
-        button.secondary { background: #777; }
-
-        /* TIMER VISUALS */
-        .timer-display { font-size: 2rem; font-family: monospace; text-align: center; margin: 10px 0; }
-        .progress-bar {
-            height: 10px;
-            background: #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--accent-color);
-            width: 100%;
-            transition: width 0.1s linear;
+            background: transparent;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0.5;
         }
 
-        /* MODAL */
-        #modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            display: none;
+        nav button.active {
+            background: var(--accent);
+            color: #fff;
+            opacity: 1;
+        }
+
+        main {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 120px 1.5rem;
+        }
+
+        .page { display: none; animation: pageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .page.active { display: block; }
+
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .timer-hero {
+            position: relative;
+            display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            margin: 20px 0;
         }
-        #modal-overlay.active { display: flex; }
+
+        .progress-ring { transform: rotate(-90deg); }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.1s linear;
+            stroke: var(--accent);
+            stroke-linecap: round;
+        }
+
+        .timer-text {
+            position: absolute;
+            font-family: var(--font-mono);
+            font-size: 2.8rem;
+            font-weight: 500;
+            letter-spacing: -1px;
+        }
+
+        .input-stack { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        input {
+            background: var(--bg);
+            border: 2px solid transparent;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            color: var(--text);
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        input:focus { border-color: var(--accent); background: var(--card); }
+
+        .btn {
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 800;
+            font-family: var(--font-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-ghost { background: var(--accent-soft); color: var(--accent); }
+        .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); }
+        .btn:active { transform: scale(0.96); opacity: 0.8; }
+
+        /* MODAL */
+        #modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4); 
+            backdrop-filter: blur(10px); z-index: 1000;
+            display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        #modal.active { display: flex; }
         .modal-content {
-            background: var(--panel-bg);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            text-align: center;
-            max-width: 90%;
+            background: var(--card); padding: 40px; border-radius: 32px;
+            width: 100%; max-width: 400px; text-align: center;
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .modal-actions { display: flex; gap: 20px; margin-top: 20px; justify-content: center; }
+        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* LOG */
-        .log-panel {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid var(--text-color);
+        .empty-state {
+            text-align: center; padding: 40px 20px; opacity: 0.5;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 600px) {
-            .input-group { flex-direction: column; }
-            nav button { font-size: 0.9rem; padding: 8px; }
+        .history-card {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
+        .history-card:last-child { border: none; }
+
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 10px; }
     </style>
 </head>
 <body class="theme-1">
 
 <header>
-    <div class="token-display">Tokens: <span id="token-count">0</span></div>
-    <div class="controls">
-        <select id="theme-selector" onchange="changeTheme()"></select>
-        <button onclick="resetTokens()" class="secondary">Reset Tokens</button>
+    <div class="logo">ZenFocus</div>
+    <div class="header-tools">
+        <div class="token-badge">🪙 <span id="token-count">0</span></div>
+        <div class="theme-pill">
+            <select id="theme-selector" onchange="changeTheme()"></select>
+        </div>
     </div>
 </header>
 
 <nav>
-    <button onclick="showPage('running')" id="nav-running" class="active">Running</button>
-    <button onclick="showPage('paused')" id="nav-paused">Paused</button>
-    <button onclick="showPage('completed')" id="nav-completed">Completed</button>
-    <button onclick="showPage('failed')" id="nav-failed">Not Completed</button>
+    <button onclick="showPage('running')" id="nav-running" class="active">Focus</button>
+    <button onclick="showPage('history')" id="nav-history">History</button>
     <button onclick="showPage('library')" id="nav-library">Library</button>
 </nav>
 
 <main>
-    <!-- RUNNING TASKS -->
+    <!-- FOCUS PAGE -->
     <div id="running" class="page active">
-        <div class="card">
-            <h3>Quick Start Task</h3>
-            <div class="input-group">
-                <input type="text" id="new-task-name" placeholder="Task Name">
-                <input type="number" id="new-task-time" placeholder="Mins">
-                <input type="number" id="new-task-reward" placeholder="Reward">
-                <input type="number" id="new-task-penalty" placeholder="Penalty">
+        <div class="card" style="margin-bottom: 30px;">
+            <div class="input-stack">
+                <input type="text" id="task-name" placeholder="What are you focusing on?">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <input type="number" id="task-time" placeholder="Mins">
+                    <input type="number" id="task-reward" placeholder="Reward">
+                </div>
             </div>
-            <button onclick="startNewTask()">Start Task</button>
+            <button class="btn btn-primary" style="width:100%" onclick="startTask()">Start Session</button>
         </div>
+        
         <div id="running-list"></div>
-        <button onclick="resetPage('running')" class="danger" style="margin-top:20px">Reset Running</button>
     </div>
 
-    <!-- PAUSED TASKS -->
-    <div id="paused" class="page">
-        <h2>Paused Tasks</h2>
-        <div id="paused-list"></div>
-        <button onclick="resetPage('paused')" class="danger" style="margin-top:20px">Reset Paused</button>
+    <!-- HISTORY PAGE -->
+    <div id="history" class="page">
+        <div class="card">
+            <h2 style="margin-top:0">Activity Log</h2>
+            <div id="history-list"></div>
+            <button class="btn btn-danger" style="width:100%; margin-top:20px" onclick="clearHistory()">Clear History</button>
+        </div>
     </div>
 
-    <!-- COMPLETED TASKS -->
-    <div id="completed" class="page">
-        <h2>Completed History</h2>
-        <div id="completed-list"></div>
-        <button onclick="resetPage('completed')" class="danger" style="margin-top:20px">Reset Completed</button>
-    </div>
-
-    <!-- NOT COMPLETED TASKS -->
-    <div id="failed" class="page">
-        <h2>Failed History</h2>
-        <div id="failed-list"></div>
-        <button onclick="resetPage('failed')" class="danger" style="margin-top:20px">Reset Failed</button>
-    </div>
-
-    <!-- LIBRARY -->
+    <!-- LIBRARY PAGE -->
     <div id="library" class="page">
         <div class="card">
-            <h3>Create Permanent Task</h3>
-            <div class="input-group">
-                <input type="text" id="lib-name" placeholder="Task Name">
-                <input type="number" id="lib-time" placeholder="Mins">
-                <input type="number" id="lib-reward" placeholder="Reward">
-                <input type="number" id="lib-penalty" placeholder="Penalty">
+            <h3>Routine Library</h3>
+            <div class="input-stack">
+                <input type="text" id="lib-name" placeholder="Routine Name">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <input type="number" id="lib-time" placeholder="Mins">
+                    <input type="number" id="lib-reward" placeholder="Reward">
+                </div>
             </div>
-            <button onclick="addToLibrary()">Save to Library</button>
-        </div>
-        <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-            <label class="switch">
-                <input type="checkbox" id="control-toggle" onchange="toggleControls()">
-                Show All Task Controls
-            </label>
+            <button class="btn btn-ghost" style="width:100%" onclick="addToLibrary()">Add to Library</button>
         </div>
         <div id="library-list"></div>
-        <button onclick="resetAllTasks()" class="danger" style="margin-top:20px">Reset All Progress (Keep Library)</button>
-        <br><br>
-        <button onclick="masterReset()" class="danger">MASTER RESET (Clear Everything)</button>
-    </div>
-
-    <!-- LOG -->
-    <div class="log-panel">
-        <strong>Activity Log:</strong>
-        <div id="activity-log"></div>
+        <div style="margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+            <button class="btn btn-danger" style="width:100%" onclick="masterReset()">Master Reset System</button>
+        </div>
     </div>
 </main>
 
-<!-- FULL SCREEN MODAL -->
-<div id="modal-overlay">
+<div id="modal">
     <div class="modal-content">
-        <h1 id="modal-task-name">Task Name</h1>
-        <h2>Time is up!</h2>
-        <div class="modal-actions">
-            <button onclick="resolveTask(true)" class="accent">✅ Completed</button>
-            <button onclick="resolveTask(false)" class="danger">❌ Not Completed</button>
+        <h1 id="modal-title">Session Complete</h1>
+        <p id="modal-desc">Great job! Did you complete the task?</p>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:30px">
+            <button class="btn btn-primary" style="background:var(--success)" onclick="resolveTask(true)">Yes, I did it</button>
+            <button class="btn btn-danger" onclick="resolveTask(false)">No, I didn't</button>
         </div>
     </div>
 </div>
 
 <script>
-    // --- STATE MANAGEMENT ---
     let state = {
         tasks: [],
         library: [],
         tokens: 0,
-        themeIndex: 0,
-        logs: [],
-        showControls: false
+        themeIndex: 0
     };
 
-    // Load from LocalStorage
-    function loadData() {
-        const saved = localStorage.getItem('offlineTimerState');
-        if (saved) {
-            state = JSON.parse(saved);
-        }
+    const CIRCLE_RADIUS = 70;
+    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS;
+
+    function init() {
+        const saved = localStorage.getItem('zenFocusState');
+        if (saved) state = JSON.parse(saved);
+        
+        initThemes();
         applyTheme();
         renderAll();
-        // Resume timer loop
         requestAnimationFrame(tick);
     }
 
-    function saveData() {
-        localStorage.setItem('offlineTimerState', JSON.stringify(state));
-        renderAll(); // Re-render to show updates
+    function save() {
+        localStorage.setItem('zenFocusState', JSON.stringify(state));
+        renderAll();
     }
 
-    function logAction(action) {
-        state.logs.unshift(action);
-        if (state.logs.length > 3) state.logs.pop();
-        saveData();
-    }
+    function startTask(name, mins, reward) {
+        const n = name || document.getElementById('task-name').value;
+        const m = mins || parseFloat(document.getElementById('task-time').value);
+        const r = reward || parseFloat(document.getElementById('task-reward').value) || 0;
 
-    // --- TASK LOGIC ---
+        if (!n || isNaN(m)) return;
 
-    function createId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
+        const ms = m * 60 * 1000;
+        state.tasks.push({
+            id: Date.now().toString(36),
+            name: n,
+            total: ms,
+            end: Date.now() + ms,
+            reward: r,
+            status: 'running'
+        });
 
-    function startNewTask() {
-        const name = document.getElementById('new-task-name').value;
-        const mins = parseFloat(document.getElementById('new-task-time').value);
-        const reward = parseFloat(document.getElementById('new-task-reward').value);
-        const penalty = parseFloat(document.getElementById('new-task-penalty').value);
-
-        if (!name || isNaN(mins) || isNaN(reward) || isNaN(penalty)) return;
-
-        addTaskToState(name, mins, reward, penalty);
-        
-        // Clear inputs
-        document.getElementById('new-task-name').value = '';
-        document.getElementById('new-task-time').value = '';
-        document.getElementById('new-task-reward').value = '';
-        document.getElementById('new-task-penalty').value = '';
-    }
-
-    function addTaskToState(name, mins, reward, penalty) {
-        const totalMs = mins * 60 * 1000;
-        const newTask = {
-            id: createId(),
-            name,
-            totalTime: totalMs,
-            remaining: totalMs,
-            endTime: Date.now() + totalMs,
-            status: 'running',
-            reward,
-            penalty
-        };
-        state.tasks.push(newTask);
-        logAction(`Task started: ${name}`);
-        saveData();
-    }
-
-    function pauseTask(id) {
-        const task = state.tasks.find(t => t.id === id);
-        if (task && task.status === 'running') {
-            // Calculate actual remaining based on current time
-            task.remaining = task.endTime - Date.now();
-            task.endTime = null; // Clear end time
-            task.status = 'paused';
-            logAction(`Task paused: ${task.name}`);
-            saveData();
+        if (!name) {
+            document.getElementById('task-name').value = '';
+            document.getElementById('task-time').value = '';
+            document.getElementById('task-reward').value = '';
         }
+        save();
     }
 
-    function resumeTask(id) {
-        const task = state.tasks.find(t => t.id === id);
-        if (task && task.status === 'paused') {
-            task.endTime = Date.now() + task.remaining;
-            task.status = 'running';
-            logAction(`Task resumed: ${task.name}`);
-            saveData();
-        }
-    }
-
-    function manualComplete(id) {
-        const task = state.tasks.find(t => t.id === id);
-        if (task) {
-            task.status = 'completed';
-            state.tokens += task.reward;
-            logAction(`Task completed: ${task.name}`);
-            saveData();
-        }
-    }
-
-    function manualFail(id) {
-        const task = state.tasks.find(t => t.id === id);
-        if (task) {
-            task.status = 'failed';
-            state.tokens -= task.penalty;
-            logAction(`Task failed: ${task.name}`);
-            saveData();
-        }
-    }
-
-    // --- LIBRARY LOGIC ---
-    function addToLibrary() {
-        const name = document.getElementById('lib-name').value;
-        const mins = parseFloat(document.getElementById('lib-time').value);
-        const reward = parseFloat(document.getElementById('lib-reward').value);
-        const penalty = parseFloat(document.getElementById('lib-penalty').value);
-
-        if (!name || isNaN(mins) || isNaN(reward) || isNaN(penalty)) return;
-
-        state.library.push({ id: createId(), name, mins, reward, penalty });
-        saveData();
-        
-        // Clear inputs
-        document.getElementById('lib-name').value = '';
-        document.getElementById('lib-time').value = '';
-        document.getElementById('lib-reward').value = '';
-        document.getElementById('lib-penalty').value = '';
-    }
-
-    function deleteFromLibrary(id) {
-        state.library = state.library.filter(t => t.id !== id);
-        saveData();
-    }
-
-    function startFromLibrary(libId) {
-        const libItem = state.library.find(t => t.id === libId);
-        if (libItem) {
-            addTaskToState(libItem.name, libItem.mins, libItem.reward, libItem.penalty);
-            showPage('running');
-        }
-    }
-
-    function toggleControls() {
-        state.showControls = document.getElementById('control-toggle').checked;
-        saveData();
-    }
-
-    // --- TIMER LOOP ---
-    let pendingModalTask = null;
+    let activeModalTask = null;
 
     function tick() {
         const now = Date.now();
         let needsSave = false;
 
-        state.tasks.forEach(task => {
-            if (task.status === 'running') {
-                const remaining = task.endTime - now;
+        state.tasks.forEach(t => {
+            if (t.status === 'running') {
+                const rem = t.end - now;
+                const progress = Math.max(0, rem / t.total);
                 
-                // Update DOM directly for smoothness if element exists
-                const timeDisplay = document.getElementById(`time-${task.id}`);
-                const barFill = document.getElementById(`bar-${task.id}`);
+                // Update UI elements if they exist
+                const textEl = document.getElementById(`text-${t.id}`);
+                const ringEl = document.getElementById(`ring-${t.id}`);
                 
-                if (timeDisplay && barFill) {
-                    timeDisplay.innerText = formatTime(Math.max(0, remaining));
-                    const percent = Math.max(0, (remaining / task.totalTime) * 100);
-                    barFill.style.width = percent + '%';
+                if (textEl) textEl.innerText = formatTime(Math.max(0, rem));
+                if (ringEl) {
+                    const offset = CIRCLE_CIRCUMFERENCE - (progress * CIRCLE_CIRCUMFERENCE);
+                    ringEl.style.strokeDashoffset = offset;
                 }
 
-                if (remaining <= 0) {
-                    // Trigger Modal
-                    task.remaining = 0;
-                    task.status = 'pending_decision'; // Temporary state waiting for user
-                    pendingModalTask = task;
-                    showModal(task);
+                if (rem <= 0) {
+                    t.status = 'alert';
+                    activeModalTask = t;
+                    showModal(t);
                     needsSave = true;
                 }
             }
         });
 
-        if (needsSave) saveData();
+        if (needsSave) save();
         requestAnimationFrame(tick);
     }
 
-    // --- MODAL LOGIC ---
-    function showModal(task) {
-        document.getElementById('modal-task-name').innerText = task.name;
-        document.getElementById('modal-overlay').classList.add('active');
-    }
-
-    function resolveTask(completed) {
-        document.getElementById('modal-overlay').classList.remove('active');
-        if (!pendingModalTask) return;
-
-        if (completed) {
-            pendingModalTask.status = 'completed';
-            state.tokens += pendingModalTask.reward;
-            logAction(`Task completed: ${pendingModalTask.name}`);
-        } else {
-            pendingModalTask.status = 'failed';
-            state.tokens -= pendingModalTask.penalty;
-            logAction(`Task failed: ${pendingModalTask.name}`);
-        }
-        
-        pendingModalTask = null;
-        saveData();
-    }
-
-    // --- HELPERS ---
     function formatTime(ms) {
-        const totalSeconds = Math.floor(ms / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        const millis = Math.floor((ms % 1000) / 100); // 1 digit for tenths
+        const s = Math.floor(ms / 1000);
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${m}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    function showModal(t) {
+        document.getElementById('modal-title').innerText = t.name;
+        document.getElementById('modal').classList.add('active');
+    }
+
+    function resolveTask(success) {
+        document.getElementById('modal').classList.remove('active');
+        if (!activeModalTask) return;
+
+        activeModalTask.status = success ? 'done' : 'failed';
+        if (success) state.tokens += activeModalTask.reward;
+        else state.tokens = Math.max(0, state.tokens - (activeModalTask.reward / 2));
         
-        const pad = n => n.toString().padStart(2, '0');
-        if (hours > 0) return `${hours}:${pad(minutes)}:${pad(seconds)}`;
-        return `${pad(minutes)}:${pad(seconds)}.${millis}`;
+        activeModalTask = null;
+        save();
     }
 
-    function isTaskRunning(name) {
-        return state.tasks.some(t => t.name === name && t.status === 'running');
-    }
-
-    // --- RENDERING ---
     function renderAll() {
         document.getElementById('token-count').innerText = state.tokens;
-        document.getElementById('activity-log').innerHTML = state.logs.map(l => `<div>${l}</div>`).join('');
-        document.getElementById('control-toggle').checked = state.showControls;
-
-        renderRunning();
-        renderPaused();
-        renderCompleted();
-        renderFailed();
-        renderLibrary();
-    }
-
-    function renderRunning() {
-        const container = document.getElementById('running-list');
-        container.innerHTML = state.tasks.filter(t => t.status === 'running').map(task => `
-            <div class="card">
-                <h3>${task.name}</h3>
-                <div class="progress-bar"><div class="progress-fill" id="bar-${task.id}" style="width:100%"></div></div>
-                <div class="timer-display" id="time-${task.id}">Calculating...</div>
-                <div class="controls">
-                    <button onclick="pauseTask('${task.id}')">⏸ Pause</button>
-                    <button onclick="manualComplete('${task.id}')" class="accent">✅ Completed</button>
-                    <button onclick="manualFail('${task.id}')" class="danger">❌ Not Completed</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function renderPaused() {
-        const container = document.getElementById('paused-list');
-        container.innerHTML = state.tasks.filter(t => t.status === 'paused').map(task => `
-            <div class="card">
-                <h3>${task.name}</h3>
-                <div>Remaining: ${formatTime(task.remaining)}</div>
-                <br>
-                <div class="controls">
-                    <button onclick="resumeTask('${task.id}')">Resume</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function renderCompleted() {
-        const container = document.getElementById('completed-list');
-        container.innerHTML = state.tasks.filter(t => t.status === 'completed').map(task => `
-            <div class="card" style="border-left: 5px solid green">
-                <h3>${task.name}</h3>
-                <div>Total Time: ${Math.round(task.totalTime/60000)} mins</div>
-                <div>Reward: +${task.reward}</div>
-            </div>
-        `).join('');
-    }
-
-    function renderFailed() {
-        const container = document.getElementById('failed-list');
-        container.innerHTML = state.tasks.filter(t => t.status === 'failed').map(task => `
-            <div class="card" style="border-left: 5px solid red">
-                <h3>${task.name}</h3>
-                <div>Total Time: ${Math.round(task.totalTime/60000)} mins</div>
-                <div>Penalty: -${task.penalty}</div>
-            </div>
-        `).join('');
-    }
-
-    function renderLibrary() {
-        const container = document.getElementById('library-list');
-        container.innerHTML = state.library.map(item => {
-            const isRunning = isTaskRunning(item.name);
-            const showStart = state.showControls || !isRunning;
-            
-            return `
-            <div class="card">
-                <h3>${item.name} (${item.mins}m)</h3>
-                <div>Reward: ${item.reward} | Penalty: ${item.penalty}</div>
-                <div class="controls" style="margin-top:10px">
-                    ${showStart ? `<button onclick="startFromLibrary('${item.id}')">Start</button>` : `<span style="opacity:0.5; padding:10px">Running...</span>`}
-                    <button onclick="deleteFromLibrary('${item.id}')" class="danger">Delete</button>
-                </div>
-            </div>
-        `}).join('');
-    }
-
-    // --- NAVIGATION ---
-    function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
         
-        document.getElementById(pageId).classList.add('active');
-        document.getElementById('nav-' + pageId).classList.add('active');
-    }
-
-    // --- RESETS ---
-    function resetTokens() {
-        state.tokens = 0;
-        logAction('Tokens reset');
-        saveData();
-    }
-
-    function resetPage(pageType) {
-        if (!confirm('Clear this list?')) return;
-        if (pageType === 'running' || pageType === 'paused') {
-             state.tasks = state.tasks.filter(t => t.status !== pageType);
+        // Render Running
+        const runningList = document.getElementById('running-list');
+        const activeTasks = state.tasks.filter(x => x.status === 'running');
+        if (activeTasks.length === 0) {
+            runningList.innerHTML = `<div class="empty-state">No active sessions. Start one above.</div>`;
         } else {
-             state.tasks = state.tasks.filter(t => t.status !== pageType);
+            runningList.innerHTML = activeTasks.map(t => `
+                <div class="card timer-hero">
+                    <svg class="progress-ring" width="160" height="160">
+                        <circle stroke="var(--accent-soft)" stroke-width="8" fill="transparent" r="${CIRCLE_RADIUS}" cx="80" cy="80"/>
+                        <circle id="ring-${t.id}" class="progress-ring__circle" stroke-width="8" 
+                            stroke-dasharray="${CIRCLE_CIRCUMFERENCE} ${CIRCLE_CIRCUMFERENCE}" 
+                            stroke-dashoffset="${CIRCLE_CIRCUMFERENCE}"
+                            fill="transparent" r="${CIRCLE_RADIUS}" cx="80" cy="80"/>
+                    </svg>
+                    <div class="timer-text" id="text-${t.id}">--:--</div>
+                    <div style="position:absolute; bottom: -10px; font-weight:700; opacity:0.6">${t.name}</div>
+                </div>
+                <button class="btn btn-danger" style="width:100%; margin-bottom:40px" onclick="cancelTask('${t.id}')">Cancel Session</button>
+            `).join('');
         }
-        logAction(`${pageType} reset`);
-        saveData();
+
+        // Render History
+        const historyList = document.getElementById('history-list');
+        const completed = state.tasks.filter(x => x.status !== 'running' && x.status !== 'alert');
+        if (completed.length === 0) {
+            historyList.innerHTML = `<div class="empty-state">No history yet.</div>`;
+        } else {
+            historyList.innerHTML = completed.reverse().map(t => `
+                <div class="history-card">
+                    <div>
+                        <div style="font-weight:700">${t.name}</div>
+                        <div style="font-size:0.7rem; color:var(--text-dim)">${Math.round(t.total/60000)} mins</div>
+                    </div>
+                    <div style="font-weight:800; color:${t.status === 'done' ? 'var(--success)' : 'var(--danger)'}">
+                        ${t.status === 'done' ? '+'+t.reward : 'Failed'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Library
+        const libList = document.getElementById('library-list');
+        if (state.library.length === 0) {
+            libList.innerHTML = `<div class="empty-state">Library is empty.</div>`;
+        } else {
+            libList.innerHTML = state.library.map(i => {
+                const isRunning = state.tasks.some(t => t.name === i.name && t.status === 'running');
+                return `
+                <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px">
+                    <div>
+                        <div style="font-weight:800">${i.name}</div>
+                        <div style="font-size:0.8rem; opacity:0.6">${i.mins}m • 🪙${i.reward}</div>
+                    </div>
+                    <div style="display:flex; gap:8px">
+                        ${isRunning ? `<span style="font-size:0.7rem; font-weight:700; color:var(--accent)">Active</span>` : 
+                        `<button class="btn btn-primary" style="padding:8px 16px" onclick="startFromLib('${i.id}')">Start</button>`}
+                        <button class="btn btn-danger" style="padding:8px" onclick="removeFromLib('${i.id}')">✕</button>
+                    </div>
+                </div>
+            `}).join('');
+        }
     }
 
-    function resetAllTasks() {
-        if (!confirm('Reset all progress?')) return;
-        state.tasks = [];
-        logAction('All tasks reset');
-        saveData();
+    function cancelTask(id) {
+        state.tasks = state.tasks.filter(x => x.id !== id);
+        save();
     }
 
-    function masterReset() {
-        if (!confirm('DELETE EVERYTHING? Library, Tokens, History?')) return;
-        localStorage.removeItem('offlineTimerState');
-        location.reload();
+    function clearHistory() {
+        state.tasks = state.tasks.filter(x => x.status === 'running');
+        save();
     }
 
-    // --- THEMES ---
-    const themes = [
-        "Default Light", "Dark Mode", "Cream", "Cyan Light", "Solarized Dark", 
-        "Solarized Light", "Atom", "Nordic", "Pink", "Mint", 
-        "High Contrast", "Cyber", "Coffee", "Deep Purple", "Lavender", 
-        "Olive", "Slate", "Burnt Orange", "Ocean", "Gray & Gold"
-    ];
+    function addToLibrary() {
+        const n = document.getElementById('lib-name').value;
+        const m = parseFloat(document.getElementById('lib-time').value);
+        const r = parseFloat(document.getElementById('lib-reward').value) || 0;
+        if (!n || isNaN(m)) return;
 
+        state.library.push({ id: Date.now().toString(36), name: n, mins: m, reward: r });
+        document.getElementById('lib-name').value = '';
+        document.getElementById('lib-time').value = '';
+        document.getElementById('lib-reward').value = '';
+        save();
+    }
+
+    function startFromLib(id) {
+        const item = state.library.find(x => x.id === id);
+        if (item) startTask(item.name, item.mins, item.reward);
+        showPage('running');
+    }
+
+    function removeFromLib(id) {
+        state.library = state.library.filter(x => x.id !== id);
+        save();
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('nav-' + id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    const themes = ["Zen White", "Midnight", "Desert", "Emerald", "Amethyst", "Blush", "High Contrast", "Ocean"];
     function initThemes() {
-        const select = document.getElementById('theme-selector');
-        themes.forEach((t, i) => {
-            const opt = document.createElement('option');
-            opt.value = i;
-            opt.innerText = t;
-            select.appendChild(opt);
-        });
+        const s = document.getElementById('theme-selector');
+        themes.forEach((t, i) => s.add(new Option(t, i)));
+        s.value = state.themeIndex;
     }
-
-    function applyTheme() {
-        document.body.className = `theme-${parseInt(state.themeIndex) + 1}`;
-        document.getElementById('theme-selector').value = state.themeIndex;
-    }
-
     function changeTheme() {
         state.themeIndex = document.getElementById('theme-selector').value;
         applyTheme();
-        logAction(`Theme changed to ${themes[state.themeIndex]}`);
-        saveData();
+        save();
+    }
+    function applyTheme() {
+        document.body.className = `theme-${parseInt(state.themeIndex) + 1}`;
     }
 
-    // --- INIT ---
-    initThemes();
-    loadData();
+    function masterReset() {
+        if (confirm("Wipe everything?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
 
+    init();
 </script>
 </body>
 </html>
